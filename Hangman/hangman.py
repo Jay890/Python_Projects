@@ -16,52 +16,52 @@ def play(word):
     word_completion = "_" * len(word)
     guessed = False
     guessed_letters = []
-    guess_words = []
+    guessed_words = []
     tries = 6
-    print("Hey, let's play hangman!")
+    print("Let's play Hangman!")
     print(display_hangman(tries))
     print(word_completion)
     print("\n")
-    while not guessed & tries > 0:
-        guess = input("Please guess a letter: ").upper()
-        if len.guess == 1 and guess.isalpha():
+    while not guessed and tries > 0:
+        guess = input("Please guess a letter or word: ").upper()
+        if len(guess) == 1 and guess.isalpha():
             if guess in guessed_letters:
-                print("Already guessed", guess)
+                print("You already guessed the letter", guess)
             elif guess not in word:
-                print(guess, "Letter is not in the word")
+                print(guess, "is not in the word.")
                 tries -= 1
                 guessed_letters.append(guess)
+            else:
+                print("Good job,", guess, "is in the word!")
+                guessed_letters.append(guess)
                 word_as_list = list(word_completion)
-                # Turn word_as_list as a list so we can index into it
-                indicies = [i for i, letter in enumerate(
+                indices = [i for i, letter in enumerate(
                     word) if letter == guess]
-                for index in indicies:
+                for index in indices:
                     word_as_list[index] = guess
                 word_completion = "".join(word_as_list)
-                # Convert back into a string
                 if "_" not in word_completion:
                     guessed = True
-                    guessed_words.append(guess)
-                else:
-                    guesssed = True
-                    word_completion = word
-                    print("Good job", guess, "in a letter in the word")
-
-        elif len(guess) == word and guess.isalpha():
-            if guess in guess_words:
+        elif len(guess) == len(word) and guess.isalpha():
+            if guess in guessed_words:
                 print("You already guessed the word", guess)
             elif guess != word:
-                print(guess, "is not in the word")
+                print(guess, "is not the word.")
                 tries -= 1
+                guessed_words.append(guess)
+            else:
+                guessed = True
+                word_completion = word
         else:
-            print("Not a valid letter")
-            print(display_hangman(tries))
-            print(word_completion)
-
-        if guessed:
-            print("Congrats you guessed the word")
-        else:
-            print("Sorry not tries left to guess", "The word was ", word)
+            print("Not a valid guess.")
+        print(display_hangman(tries))
+        print(word_completion)
+        print("\n")
+    if guessed:
+        print("Congrats, you guessed the word! You win!")
+    else:
+        print("Sorry, you ran out of tries. The word was " +
+              word + ". Maybe next time!")
 
 
 def display_hangman(tries):
